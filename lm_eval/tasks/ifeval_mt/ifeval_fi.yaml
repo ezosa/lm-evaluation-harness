@@ -1,4 +1,4 @@
-task: ifeval
+task: ifeval_fi
 dataset_path: LumiOpen/ifeval_mt
 dataset_name: null
 output_type: generate_until
