@@ -34,7 +34,7 @@ _InstructionArgsDtype = Optional[Dict[str, Union[int, str, Sequence[str]]]]
 _LANGUAGES = instructions_util.LANGUAGE_CODES
 
 # The relational operation for comparison.
-_COMPARISON_RELATION = ("alle", "ainakin")
+_COMPARISON_RELATION = ("less than", "at least")
 
 # The maximum number of sentences.
 _MAX_NUM_SENTENCES = 20
