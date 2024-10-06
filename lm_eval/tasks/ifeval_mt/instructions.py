@@ -1065,6 +1065,8 @@ class ParagraphFirstWordCheck(Instruction):
 
         # check that index doesn't go out of bounds
         if self._nth_paragraph <= num_paragraphs:
+            print("paragraphs:", paragraphs)    
+            print("_nth_paragraph:", self._nth_paragraph)
             paragraph = paragraphs[self._nth_paragraph - 1].strip()
             if not paragraph:
                 return False
