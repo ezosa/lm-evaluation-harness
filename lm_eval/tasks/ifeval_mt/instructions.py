@@ -24,7 +24,7 @@ from typing import Dict, Optional, Sequence, Union
 
 import langdetect
 
-from lm_eval.tasks.ifeval_mt import instructions_util
+from lm_eval.tasks.ifeval import instructions_util
 
 
 logger = logging.getLogger(__name__)
@@ -147,9 +147,8 @@ class ResponseLanguageChecker(Instruction):
             self._language = random.choice(list(_LANGUAGES.keys()))
         # TODO(tianjianlu): opens the description generation to more choices.
         self._description_pattern = (
-            # "Your ENTIRE response should be in {language} language, no other "
-            # + "language is allowed."
-            "KOKONAISEN vastauksesi on oltava {language}-kielellä, muita kieliä ei sallita."
+            "Your ENTIRE response should be in {language} language, no other "
+            + "language is allowed."
         )
         return self._description_pattern.format(language=_LANGUAGES[self._language])
 
@@ -216,8 +215,7 @@ class NumberOfSentences(Instruction):
             self._comparison_relation = relation
 
         self._description_pattern = (
-            # "Your response should contain {relation} {num_sentences} sentences."
-            "Vastauksesi tulisi sisältää {relation} {num_sentences} lauseita."
+            "Your response should contain {relation} {num_sentences} sentences."
         )
         return self._description_pattern.format(
             relation=self._comparison_relation,
@@ -272,10 +270,8 @@ class PlaceholderChecker(Instruction):
         if self._num_placeholders is None or self._num_placeholders < 0:
             self._num_placeholders = random.randint(1, _NUM_PLACEHOLDERS)
         self._description_pattern = (
-            # "The response must contain at least {num_placeholders} placeholders "
-            # + "represented by square brackets, such as [address]."
-            "Vastauksen on sisällettävä vähintään {num_placeholders} hakasulkeilla "
-            + "esitettyjä paikanpitäjiä, kuten [address]."
+            "The response must contain at least {num_placeholders} placeholders "
+            + "represented by square brackets, such as [address]."
         )
         return self._description_pattern.format(num_placeholders=self._num_placeholders)
 
@@ -319,14 +315,10 @@ class BulletListChecker(Instruction):
         if self._num_bullets is None or self._num_bullets < 0:
             self._num_bullets = random.randint(1, _NUM_BULLETS)
         self._description_pattern = (
-            # "Your answer must contain exactly {num_bullets} bullet points. "
-            # + "Use the markdown bullet points such as:\n"
-            # + "* This is point 1. \n"
-            # + "* This is point 2"
-            "Vastauksesi on sisällettävä täsmälleen {num_bullets} luetelmakohtia. "
-            + "Käytä markdown-luettelokohtia, kuten:\n"
-            + "* Tämä on kohta 1. \n" 
-            + "* Tämä on kohta 2"
+            "Your answer must contain exactly {num_bullets} bullet points. "
+            + "Use the markdown bullet points such as:\n"
+            + "* This is point 1. \n"
+            + "* This is point 2"
         )
         return self._description_pattern.format(num_bullets=self._num_bullets)
 
@@ -363,8 +355,7 @@ class ConstrainedResponseChecker(Instruction):
         # A sequence of string(s) representing the options of the expected response.
         self._constrained_responses = _CONSTRAINED_RESPONSE_OPTIONS
         self._description_pattern = (
-            # "Answer with one of the following options: {response_options}"
-            "Vastaa jollakin seuraavista vaihtoehdoista: {response_options}"
+            "Answer with one of the following options: {response_options}"
         )
         return self._description_pattern.format(
             response_options=self._constrained_responses
@@ -412,10 +403,8 @@ class ConstrainedStartChecker(Instruction):
         if self._starter is None:
             self._starter = random.choice(_STARTER_OPTIONS)
         self._description_pattern = (
-            # "During the conversation, when it is your turn, "
-            # + "please always start with {starter}"
-            "Keskustelun aikana, kun on sinun vuorosi, "
-            + "aloita aina {starter}:llä."
+            "During the conversation, when it is your turn, "
+            + "please always start with {starter}"
         )
         return self._description_pattern.format(starter=self._starter)
 
@@ -462,10 +451,8 @@ class HighlightSectionChecker(Instruction):
             self._num_highlights = random.randint(1, _NUM_HIGHLIGHTED_SECTIONS)
 
         self._description_pattern = (
-            # "Highlight at least {num_highlights} sections in your answer with "
-            # + "markdown, i.e. *highlighted section*."
-            "Korosta vähintään {num_highlights} osiot vastauksessasi markdownilla, "
-            + "eli *highlighted section*."
+            "Highlight at least {num_highlights} sections in your answer with "
+            + "markdown, i.e. *highlighted section*."
         )
 
         return self._description_pattern.format(num_highlights=self._num_highlights)
@@ -529,18 +516,12 @@ class SectionChecker(Instruction):
             self._num_sections = random.randint(1, _NUM_SECTIONS)
 
         self._description_pattern = (
-            # "Your response must have {num_sections} sections. Mark the beginning "
-            # + "of each section with {section_spliter} X, such as:\n"
-            # + "{section_spliter} 1\n"
-            # + "[content of section 1]\n"
-            # + "{section_spliter} 2\n"
-            # + "[content of section 2]"
-            "Vastauksessasi on oltava {num_sections} osioita." 
-            + "Merkitse jokaisen jakson alku {section_spliter}:llä. X, esimerkiksi:\n" 
+            "Your response must have {num_sections} sections. Mark the beginning "
+            + "of each section with {section_spliter} X, such as:\n"
             + "{section_spliter} 1\n"
-            + "[jakson 1 sisältö]\n"
+            + "[content of section 1]\n"
             + "{section_spliter} 2\n"
-            + "[jakson 2 sisältö]."
+            + "[content of section 2]"
         )
 
         return self._description_pattern.format(
@@ -594,10 +575,8 @@ class ParagraphChecker(Instruction):
             self._num_paragraphs = random.randint(1, _NUM_PARAGRAPHS)
 
         self._description_pattern = (
-            # "There should be {num_paragraphs} paragraphs. "
-            # + "Paragraphs are separated with the markdown divider: ***"
-            "Kappaleita pitäisi olla {num_paragraphs}. " +
-            "Kappaleet erotetaan toisistaan markdown-jakajalla: ***"
+            "There should be {num_paragraphs} paragraphs. "
+            + "Paragraphs are separated with the markdown divider: ***"
         )
 
         return self._description_pattern.format(num_paragraphs=self._num_paragraphs)
@@ -656,10 +635,8 @@ class PostscriptChecker(Instruction):
             self._postscript_marker = random.choice(_POSTSCRIPT_MARKER)
 
         self._description_pattern = (
-            # "At the end of your response, please explicitly add a postscript "
-            # + "starting with {postscript}"
-            "Lisätkää vastauksenne loppuun nimenomaisesti jälkikirjoitus, "
-            + "joka alkaa kirjaimella {postscript}."
+            "At the end of your response, please explicitly add a postscript "
+            + "starting with {postscript}"
         )
 
         return self._description_pattern.format(postscript=self._postscript_marker)
@@ -717,12 +694,9 @@ class RephraseChecker(Instruction):
 
         self._reference_without_change = original_message
         self._description = (
-            # "Rephrasing: Your rephrased response should only"
-            # + "change the words/sentences in between two asterisks"
-            # + "such as *change me*."
-            "Uudelleenmuotoilu: Muotoile vastauksesi uudelleen, "
-            + "mutta vaihda vain kahden tähdellä merkityn kohdan välissä olevat sanat/lauseet," 
-            + "kuten *vaihda minut*."
+            "Rephrasing: Your rephrased response should only"
+            + "change the words/sentences in between two asterisks"
+            + "such as *change me*."
         )
         return self._description
 
@@ -846,11 +820,8 @@ class KeywordFrequencyChecker(Instruction):
             self._comparison_relation = relation
 
         self._description_pattern = (
-            # "In your response, the word {keyword} should appear {relation} "
-            # + "{frequency} times."
-            "Vastauksessasi sanan {keyword} tulisi esiintyä {relation} " 
-            + "{frequency} kertaa."
-
+            "In your response, the word {keyword} should appear {relation} "
+            + "{frequency} times."
         )
 
         return self._description_pattern.format(
@@ -916,8 +887,7 @@ class NumberOfWords(Instruction):
         else:
             self._comparison_relation = relation
 
-        # self._description_pattern = "Answer with {relation} {num_words} words."
-        self._description_pattern = "Vastaa {relation} {num_words} sanoilla."
+        self._description_pattern = "Answer with {relation} {num_words} words."
 
         return self._description_pattern.format(
             relation=self._comparison_relation, num_words=self._num_words
@@ -946,10 +916,8 @@ class JsonFormat(Instruction):
 
     def build_description(self):
         self._description_pattern = (
-            # "Entire output should be wrapped in JSON format. You can use markdown"
-            # " ticks such as ```."
-            "Koko tuloste on pakattava JSON-muotoon. Voit käyttää markdown-rasteja "
-            + "kuten ```."
+            "Entire output should be wrapped in JSON format. You can use markdown"
+            " ticks such as ```."
         )
         return self._description_pattern
 
@@ -1015,14 +983,10 @@ class ParagraphFirstWordCheck(Instruction):
         self._first_word = self._first_word.lower()
 
         self._description_pattern = (
-            # "There should be {num_paragraphs} paragraphs. "
-            # + "Paragraphs and only paragraphs are separated with each other by two "
-            # + "new lines as if it was '\\n\\n' in python. "
-            # + "Paragraph {nth_paragraph} must start with word {first_word}."
-            "Kappaleita pitäisi olla {num_paragraphs}. "
-            + "Kappaleet ja vain kappaleet erotetaan toisistaan kahdella "
-            + "uudella rivillä ikään kuin se olisi '\\n\\n' pythonissa. "
-            + "Kappaleen {nth_paragraph} on alettava sanalla {first_word}."
+            "There should be {num_paragraphs} paragraphs. "
+            + "Paragraphs and only paragraphs are separated with each other by two "
+            + "new lines as if it was '\\n\\n' in python. "
+            + "Paragraph {nth_paragraph} must start with word {first_word}."
         )
 
         return self._description_pattern.format(
@@ -1065,8 +1029,6 @@ class ParagraphFirstWordCheck(Instruction):
 
         # check that index doesn't go out of bounds
         if self._nth_paragraph <= num_paragraphs:
-            print("paragraphs:", paragraphs)    
-            print("_nth_paragraph:", self._nth_paragraph)
             paragraph = paragraphs[self._nth_paragraph - 1].strip()
             if not paragraph:
                 return False
@@ -1119,8 +1081,7 @@ class KeySentenceChecker(Instruction):
             self._num_sentences = num_sentences
 
         self._description_pattern = (
-            # "Include {num_sentences} of the following sentences {key_sentences}"
-            "Sisällytä {num_sentences} seuraavista lauseista {key_sentences}."
+            "Include {num_sentences} of the following sentences {key_sentences}"
         )
 
         return self._description_pattern.format(
@@ -1171,8 +1132,7 @@ class ForbiddenWords(Instruction):
             self._forbidden_words = list(set(forbidden_words))
         self._forbidden_words = sorted(self._forbidden_words)
         self._description_pattern = (
-            # "Do not include keywords {forbidden_words} in the response."
-            "Älä sisällytä vastaukseen avainsanoja {forbidden_words}."
+            "Do not include keywords {forbidden_words} in the response."
         )
 
         return self._description_pattern.format(forbidden_words=self._forbidden_words)
@@ -1214,20 +1174,13 @@ class RephraseParagraph(Instruction):
         self._high = high
 
         self._description = (
-            # "Rephrase the following paragraph: "
-            # + "{original_paragraph}\nYour response should have "
-            # + "between {low} and {high} of the same words. "
-            # + "Words are the same if and only if all of the "
-            # + "letters, ignoring cases, are the same. For "
-            # + "example, 'run' is the same as 'Run' but different "
-            # + "to 'ran'."
-            "Muotoile seuraava kohta uudelleen: "
-            + "{original_paragraph}\nVastauksessasi tulisi olla "
-            + "{low} ja {high} välillä samoja sanoja. " 
-            + "Sanat ovat samoja, jos ja vain jos kaikki kirjaimet ovat samoja, "
-            + "lukuun ottamatta isoja ja pieniä kirjaimia. "
-            + "Esimerkiksi \"juosta\" on sama kuin \"Juosta\" mutta erilainen " 
-            + "kuin \"juoksin\"."
+            "Rephrase the following paragraph: "
+            + "{original_paragraph}\nYour response should have "
+            + "between {low} and {high} of the same words. "
+            + "Words are the same if and only if all of the "
+            + "letters, ignoring cases, are the same. For "
+            + "example, 'run' is the same as 'Run' but different "
+            + "to 'ran'."
         )
 
         return self._description.format(
@@ -1266,9 +1219,8 @@ class TwoResponsesChecker(Instruction):
     def build_description(self):
         """Build the instruction description."""
         self._description_pattern = (
-            # "Give two different responses. Responses and only responses should"
-            # " be separated by 6 asterisk symbols: ******."
-            "Anna kaksi erilaista vastausta. Vastaukset ja vain vastaukset on erotettava toisistaan 6 tähdellä: ******"
+            "Give two different responses. Responses and only responses should"
+            " be separated by 6 asterisk symbols: ******."
         )
         return self._description_pattern
 
@@ -1320,14 +1272,10 @@ class RepeatPromptThenAnswer(Instruction):
         else:
             self._prompt_to_repeat = prompt_to_repeat
         self._description_pattern = (
-            # "First repeat the request word for word without change,"
-            # " then give your answer (1. do not say any words or characters"
-            # " before repeating the request; 2. the request you need to repeat"
-            # " does not include this sentence)"
-            "Toista ensin pyyntö sanasta sanaan ilman muutoksia "
-            " ja anna sitten vastauksesi (1. älä sano mitään sanoja tai merkkejä" 
-            " ennen pyynnön toistamista; 2. toistettava pyyntö" 
-            " ei sisällä tätä lausetta)."
+            "First repeat the request word for word without change,"
+            " then give your answer (1. do not say any words or characters"
+            " before repeating the request; 2. the request you need to repeat"
+            " does not include this sentence)"
         )
         return self._description_pattern
 
@@ -1362,10 +1310,8 @@ class EndChecker(Instruction):
         if self._end_phrase is None:
             self._end_phrase = random.choice(_ENDING_OPTIONS)
         self._description_pattern = (
-            # "Finish your response with this exact phrase {ender}. "
-            # "No other words should follow this phrase."
-            "Päätä vastauksesi juuri tähän lauseeseen {ender}. "
-            "Tämän lauseen jälkeen ei saa seurata muita sanoja."
+            "Finish your response with this exact phrase {ender}. "
+            "No other words should follow this phrase."
         )
         return self._description_pattern.format(ender=self._end_phrase)
 
@@ -1389,10 +1335,8 @@ class TitleChecker(Instruction):
     def build_description(self):
         """Build the instruction description."""
         self._description_pattern = (
-            # "Your answer must contain a title, wrapped in double angular brackets,"
-            # " such as <<poem of joy>>."
-            "Vastauksessasi on oltava otsikko, joka on kiedottu kaksoissulkeisiin,"
-            " esimerkiksi <<runo ilosta>>."
+            "Your answer must contain a title, wrapped in double angular brackets,"
+            " such as <<poem of joy>>."
         )
         return self._description_pattern
 
@@ -1460,10 +1404,8 @@ class LetterFrequencyChecker(Instruction):
             self._comparison_relation = let_relation
 
         self._description_pattern = (
-            # "In your response, the letter {letter} should appear {let_relation}"
-            # " {let_frequency} times."
-            "Vastauksessasi kirjaimen {letter} tulisi esiintyä {let_relation}" 
-            "{let_frequency} kertaa."
+            "In your response, the letter {letter} should appear {let_relation}"
+            " {let_frequency} times."
         )
 
         return self._description_pattern.format(
@@ -1501,8 +1443,7 @@ class CapitalLettersEnglishChecker(Instruction):
     def build_description(self):
         """Build the instruction description."""
         self._description_pattern = (
-            # "Your entire response should be in English, and in all capital letters."
-            "Koko vastauksen on oltava suomenkielinen ja kirjoitettu isoilla kirjaimilla."
+            "Your entire response should be in English, and in all capital letters."
         )
         return self._description_pattern
 
@@ -1533,10 +1474,8 @@ class LowercaseLettersEnglishChecker(Instruction):
     def build_description(self):
         """Build the instruction description."""
         self._description_pattern = (
-            # "Your entire response should be in English, and in all lowercase"
-            # " letters. No capital letters are allowed."
-            "Koko vastauksen on oltava englanninkielinen ja kirjoitettava pienillä kirjaimilla." 
-            " Isot kirjaimet eivät ole sallittuja."
+            "Your entire response should be in English, and in all lowercase"
+            " letters. No capital letters are allowed."
         )
         return self._description_pattern
 
@@ -1567,8 +1506,7 @@ class CommaChecker(Instruction):
     def build_description(self):
         """Build the instruction description."""
         self._description_pattern = (
-            # "In your entire response, refrain from the use of any commas."
-            "Älä käytä koko vastauksessasi pilkkuja."
+            "In your entire response, refrain from the use of any commas."
         )
         return self._description_pattern
 
@@ -1617,10 +1555,8 @@ class CapitalWordFrequencyChecker(Instruction):
             )
 
         self._description_pattern = (
-            # "In your response, words with all capital letters should appear"
-            # " {relation} {frequency} times."
-            "Vastauksessasi isoilla kirjaimilla kirjoitettujen sanojen tulisi esiintyä "
-            "{relation} {frequency} kertaa."
+            "In your response, words with all capital letters should appear"
+            " {relation} {frequency} times."
         )
 
         return self._description_pattern.format(
@@ -1658,8 +1594,7 @@ class QuotationChecker(Instruction):
     def build_description(self):
         """Build the instruction description."""
         self._description_pattern = (
-            # "Wrap your entire response with double quotation marks."
-            "Laita koko vastauksesi kaksinkertaisiin lainausmerkkeihin."
+            "Wrap your entire response with double quotation marks."
         )
         return self._description_pattern
 
