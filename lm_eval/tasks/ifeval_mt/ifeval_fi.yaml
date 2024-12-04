@@ -1,6 +1,6 @@
 task: ifeval_fi
 dataset_path: LumiOpen/ifeval_mt
-dataset_name: null
+dataset_name: fi
 output_type: generate_until
 test_split: train
 num_fewshot: 0
